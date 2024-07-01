@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: db-backup-cron
+spec:
+  schedule: "0 0 * * *"  # Ejecuta a la medianoche cada día
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: db-backup
+              image: tu-dockerhub-usuario/cron:latest  # Reemplaza con tu imagen de Docker
+              env:
+                - name: MONGODB_URI
+                  value: "mongodb://tu_mongodb_uri"
+                - name: DB_NAME
+                  value: "tu_db"
+              volumeMounts:
+                - name: backups
+                  mountPath: /backups
+          restartPolicy: OnFailure
+          volumes:
+            - name: backups
+              hostPath:
+                path: /mnt/backups
+                type: Directory

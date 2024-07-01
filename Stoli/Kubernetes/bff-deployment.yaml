@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bff-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bff
+  template:
+    metadata:
+      labels:
+        app: bff
+    spec:
+      containers:
+      - name: bff
+        image: bryanmarc01/bff-image:latest
+        ports:
+        - containerPort: 8080 # Asegúrate de que este puerto coincida con el puerto expuesto en el Dockerfile
+---
